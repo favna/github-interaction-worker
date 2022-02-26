@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "dist",
+    "rootDir": "src",
     "module": "commonjs",
     "target": "es2019",
     "lib": [
@@ -18,14 +19,7 @@
     ]
   },
   "include": [
-    "./src/*.ts",
-    "./test/*.ts",
-    "./src/**/*.ts",
-    "./test/**/*.ts",
+    "src",
     "./node_modules/@cloudflare/workers-types/index.d.ts"
-  ],
-  "exclude": [
-    "node_modules/",
-    "dist/"
   ]
 }

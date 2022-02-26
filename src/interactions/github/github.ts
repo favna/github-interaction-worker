@@ -9,14 +9,15 @@ function validateGitHubName(name: string): boolean {
 }
 
 export async function githubInfo(owner: string, repository: string, expression: string): Promise<Response> {
-	const re = /(?:https?:\/\/github\.com)?\/?(.*?)\/(.*?)\/.*?\/(.[a-zA-Z0-9]*)/;
+	const re = /(?:https?:\/\/github\.com)?\/?(?<owner>.*?)\/(?<repository>.*?)\/.*?\/(?<expression>.[a-zA-Z0-9]*)/;
 	const res = re.exec(expression);
-	if (res) {
-		const [, o, r, q] = res;
-		owner = o;
-		repository = r;
-		expression = q;
+
+	if (res && res.groups?.owner && res.groups?.repository && res.groups?.expression) {
+		owner = res.groups.owner;
+		repository = res.groups.repository;
+		expression = res.groups.expression;
 	}
+
 	if (!validateGitHubName(owner)) {
 		return respondError(`Invalid repository owner name: \`${owner}\`.`);
 	}
@@ -28,5 +29,6 @@ export async function githubInfo(owner: string, repository: string, expression: 
 	if (isNaN(Number(expression))) {
 		return commitInfo(owner, repository, expression);
 	}
+
 	return issueInfo(owner, repository, expression);
 }
